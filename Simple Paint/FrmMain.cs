@@ -11,7 +11,7 @@ using System.Drawing.Drawing2D;
 
 namespace Simple_Paint
 {
-
+    #region Tạo dữ liệu ENUM
     /// <summary>
     /// Create shapes: Line, Retangle, Square, Ellipse, Curve, Circle, Polygon
     /// </summary>
@@ -37,6 +37,8 @@ namespace Simple_Paint
         Select,
         Zoom
     }
+    #endregion
+
     public partial class FrmMain : Form
     {
         #region Declare
@@ -62,10 +64,6 @@ namespace Simple_Paint
         /// Cờ xác định bắt đầu vẽ ở những hình cần click để chọn điểm
         /// </summary>
         bool isStartClick = false;
-        /// <summary>
-        /// Cờ xác định có đang nhóm các hình được chọn hay k
-        /// </summary>
-        bool isGroup = false;
         /// <summary>
         /// Cờ xác định có đang zoom hay k
         /// </summary>
@@ -171,8 +169,6 @@ namespace Simple_Paint
             // Action default
             action = Action.Select;
 
-            // PictureBox TextFill default
-            ptbTextFill.BackgroundImage = Image.FromFile(@"D:\Code HK2 - 2022\Lập trình window\Simple Paint\Simple Paint\Resources\TextFill\0.png");
 
         }
         /// <summary>
@@ -513,6 +509,7 @@ namespace Simple_Paint
             isPressed_Ctrl = e.Control;
         }
         #endregion
+
         // Đóng Form
         private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -639,13 +636,13 @@ namespace Simple_Paint
         
         /*MOUSE-EVENT*/
         #region Mouse
+
         /// <summary>
         /// Hàm chọn hình
         /// </summary>
         /// <param name="p">Điểm click chuột</param>
         public void MouseDown_Select(Point p)
         {
-            
             // Kiểm tra xem có đang nhấn phím ctrl không, nếu có có thể chọn nhiều hình, chọn 2 lần sẽ bỏ hình
             if(isPressed_Ctrl)
             {
@@ -669,11 +666,12 @@ namespace Simple_Paint
                         shape.isSelected = true;
                         shapeSelected = shape;
                     }
-                 });
+                });
                 if (shapeSelected != null)
                 {
                     ShapeInfo();
-                    if (isZoom) shapeSelected.SelectPoint(p);
+                    if (isZoom) 
+                        shapeSelected.SelectPoint(p);
                     isRegion = false;
                 }
                 else
@@ -689,7 +687,6 @@ namespace Simple_Paint
         private void pic_MouseDown(object sender, MouseEventArgs e)
         {
             btnGroup.Tag = false;
-
             // Khi isStartClick true có nghĩa Polygon hoặc Curve đang được vẽ
             // Không thể tạo thêm hình khi hình hiện tại chưa vẽ xong
             if (shapeDrawing != Shape.None && !isStartClick)
@@ -720,7 +717,6 @@ namespace Simple_Paint
                     case Shape.Circle:
                         lstDrawing.Add(new clsDrawCircle(pen, brush));
                         break;
-
                     // Curve và Polygon có cách vẽ khác với những hình còn lại
                     // Curve và Polygon yêu cầu nhiều hơn 1 điểm để vẽ và nhiều hơn 2 điểm để có hình khác đường thẳng
                     case Shape.Curve:
@@ -745,6 +741,7 @@ namespace Simple_Paint
                 MouseDown_Select(e.Location);
             }
         }
+
         /// <summary>
         /// Khi di chuyển chuột vị trí mới sẽ được cập nhật
         /// </summary>
@@ -880,7 +877,6 @@ namespace Simple_Paint
             if (action == Action.SpecialDraw && index >= 0 && isStartClick)
             {
                 lstDrawing[index].AddPoin(e.Location);
-
                 // Vẽ hình. Nếu thất bại sẽ xóa hình và thông báo cho người dùng các vẽ hình đặc biệt
                 try
                 {

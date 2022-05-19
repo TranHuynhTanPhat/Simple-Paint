@@ -13,8 +13,11 @@ namespace Simple_Paint
     /// </summary>
     public class clsDrawCurve : DrawShape
     {
+        // Properties
         public List<Point> lstPoints { get; set; }
         public int selectedPoint { get; set; }
+
+        // Contructors
         public clsDrawCurve(Pen pen, Brush brush):base(pen, brush) 
         {
             lstPoints = new List<Point>();

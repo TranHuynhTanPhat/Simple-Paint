@@ -9,6 +9,7 @@ namespace Simple_Paint
     /// </summary>
     public class ClsDrawEllipse : DrawShape
     {
+        // Contructors
         public ClsDrawEllipse(Pen pen, Brush brush):base(pen, brush) { }
 
         #region override

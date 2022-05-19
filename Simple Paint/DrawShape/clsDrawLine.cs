@@ -14,7 +14,6 @@ namespace Simple_Paint
         // Contructors
         public ClsDrawLine(Pen pen, Brush brush):base(pen, brush) { }
 
-        // Methods
         #region override
         public override void AddPoin(Point p)
         {

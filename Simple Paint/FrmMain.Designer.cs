@@ -378,7 +378,8 @@
             // ptbTextFill
             // 
             this.ptbTextFill.BackColor = System.Drawing.Color.Black;
-            this.ptbTextFill.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ptbTextFill.BackgroundImage = global::Simple_Paint.Properties.Resources._0;
+            this.ptbTextFill.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ptbTextFill.Location = new System.Drawing.Point(15, 19);
             this.ptbTextFill.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ptbTextFill.Name = "ptbTextFill";

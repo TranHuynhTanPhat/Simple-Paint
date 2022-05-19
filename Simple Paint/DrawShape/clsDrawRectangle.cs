@@ -9,6 +9,7 @@ namespace Simple_Paint
     /// </summary>
     public class ClsDrawRetangle : DrawShape
     {
+        // Contructors
         public ClsDrawRetangle(Pen pen, Brush brush):base(pen, brush) { }
 
         #region override

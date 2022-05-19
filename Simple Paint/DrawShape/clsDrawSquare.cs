@@ -8,6 +8,7 @@ namespace Simple_Paint
     /// </summary>
     public class ClsDrawSquare : DrawShape
     {
+        // Contructors
         public ClsDrawSquare(Pen pen, Brush brush) : base(pen, brush) { }
 
         #region override

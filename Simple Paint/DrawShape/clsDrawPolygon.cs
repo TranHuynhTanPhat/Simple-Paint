@@ -10,9 +10,11 @@ namespace Simple_Paint
     /// </summary>
     public class clsDrawPolygon : DrawShape
     {
+        // Properties
         public List<Point> lstPoints;
         public int selectedPoint { get; set; }
 
+        // Contructors
         public clsDrawPolygon(Pen pen, Brush brush) : base(pen, brush)
         {
             lstPoints = new List<Point>();
