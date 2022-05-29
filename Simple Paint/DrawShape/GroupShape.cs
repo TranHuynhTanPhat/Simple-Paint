@@ -49,10 +49,7 @@ namespace Simple_Paint
 
 
         #region Methods overried
-        public override void SelectPoint(Point p)
-        {
-            SelectPoint(p);
-        }
+        
         public override void Zoom(Point firstPoint, Point eLocation)
         {
             lstShapeInGroup.ForEach(shape =>

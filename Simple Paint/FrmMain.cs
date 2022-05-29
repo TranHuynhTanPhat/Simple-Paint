@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 
@@ -28,7 +24,7 @@ namespace Simple_Paint
     }
 
     /// <summary>
-    /// Create actions: Draw, Select
+    /// Create actions: Draw, SpecialDraw, Select, Zoom
     /// </summary>
     enum Action
     {
@@ -41,15 +37,17 @@ namespace Simple_Paint
 
     public partial class FrmMain : Form
     {
-        #region Declare
+        #region Properties
         /// <summary>
         /// Biến Graphics để vẽ hình
         /// </summary>
         Graphics gp;
+
         /// <summary>
         /// Biến Bitmap để thao tác với các pixel trong ảnh
         /// </summary>
         Bitmap bm;
+
         /// <summary>
         /// Điểm neo của hình để thực hiện thao tác Zoom và Move
         /// </summary>
@@ -65,10 +63,6 @@ namespace Simple_Paint
         /// </summary>
         bool isStartClick = false;
         /// <summary>
-        /// Cờ xác định có đang zoom hay k
-        /// </summary>
-        bool isZoom = false;
-        /// <summary>
         /// Cờ xác định vẽ vùng chọn
         /// </summary>
         bool isRegion = true;
@@ -76,6 +70,7 @@ namespace Simple_Paint
         /// Cờ xác định có đang nhấn phím Ctrl hay không
         /// </summary>
         bool isPressed_Ctrl;
+
 
         /// <summary>
         /// Hình đang được vẽ
@@ -134,6 +129,8 @@ namespace Simple_Paint
 
         #endregion
 
+        #region Methods
+
         #region Thiết lập menu
         /// <summary>
         /// Thiết lập menu mặc định khi bởi động chương trình mới
@@ -171,8 +168,9 @@ namespace Simple_Paint
 
 
         }
+
         /// <summary>
-        /// Load lại màu cho button
+        /// Load lại màu cho button hình
         /// </summary>
         /// <param name="sender">Button đang được focus</param>
         /// <param name="e"></param>
@@ -216,6 +214,9 @@ namespace Simple_Paint
                 btnPolygon.BackColor = Color.Peru;
             }
         }
+        /// <summary>
+        /// Load lại màu cho các button option
+        /// </summary>
         public void ColorOptionButton()
         {
             if ((bool)btnSelect.Tag == true)
@@ -241,8 +242,9 @@ namespace Simple_Paint
             else
                 btnZoom.BackColor = Color.White;
         }
+
         /// <summary>
-        /// Set lại option cho menu 
+        /// Set lại option cho menu Brush
         /// </summary>
         public void SetBrushMenu()
         {
@@ -292,9 +294,6 @@ namespace Simple_Paint
             btnSelect.Tag = true;
             btnZoom.Tag = false;
             btnGroup.Tag = false;
-            //isSelect = true;
-            //isZoom = false;
-            //isGroup = false;
             isStartClick = false;
             //Set lại shape và action
             action = Action.Select;
@@ -312,7 +311,6 @@ namespace Simple_Paint
             {
                 btnZoom.Tag = true;
                 btnSelect.Tag = true;
-                isZoom = true;
                 shapeDrawing = Shape.None;
                 action = Action.Select;
                 ColorShapeButton( sender,e);
@@ -326,9 +324,6 @@ namespace Simple_Paint
             {
                 btnSelect.Tag = true;
                 btnGroup.Tag = false;
-                //isSelect = true;
-                //isZoom= false;
-                //isGroup = false;
                 shapeDrawing = Shape.None;
                 action = Action.Select;
                 ColorShapeButton(sender, e);
@@ -400,6 +395,7 @@ namespace Simple_Paint
             }
         }
         #endregion
+
         #region ShapeButton
         // Làm nổi bật những Button shape được chọn
         private void btnShape_Click(object sender ,EventArgs e)
@@ -411,9 +407,6 @@ namespace Simple_Paint
             // Reset lại cờ isSelected 
             lstDrawing.ForEach(shape => shape.isSelected = false);
             
-            //isSelect = false;
-            //isGroup = false;
-            //isZoom = false;
             if(!isStartClick)
             {
                 Button btn = sender as Button;
@@ -580,12 +573,11 @@ namespace Simple_Paint
                     penColor: ptbColorBorder.BackColor
                     );
                 }
-                
-
             });
 
             Painting();// Vẽ lại hình sau khi cập nhật thuộc tính
         }
+
         // Thay đổi kích thước
         private void trbSize_Scroll(object sender, EventArgs e)
         {
@@ -597,11 +589,23 @@ namespace Simple_Paint
             });
             Painting();
         }
+
         /// <summary>
         /// Dùng để cập nhật thông tin về hình được chọn lên menu
         /// </summary>
         public void ShapeInfo()
         {
+
+            if (shapeSelected is GroupShape)
+            {
+                btnGroup.Tag = true;
+                ColorOptionButton();
+            }
+            else
+            {
+                btnGroup.Tag = false;
+                ColorOptionButton();
+            }
             btnSelect.Tag = true;
             ColorOptionButton();
             cbBrush.Checked = shapeSelected.isBrushing;
@@ -670,12 +674,24 @@ namespace Simple_Paint
                 if (shapeSelected != null)
                 {
                     ShapeInfo();
-                    if (isZoom) 
+                    if ((bool)btnZoom.Tag) 
                         shapeSelected.SelectPoint(p);
                     isRegion = false;
                 }
                 else
                 {
+                    if((bool)btnGroup.Tag==true)
+                    {
+                        lstDrawing[lstDrawing.Count - 1].isSelected = true;
+                        UnGroup();
+                        btnGroup.Tag = false;
+                        ColorOptionButton();
+                    }    
+                    if((bool)btnZoom.Tag==true)
+                    {
+                        btnZoom.Tag = false;
+                        ColorOptionButton();
+                    }    
                     isStartMove = true;
                     isRegion = true;
                     regionSelected = new Rectangle(p, new Size(0, 0));
@@ -686,7 +702,7 @@ namespace Simple_Paint
         /// Khi nhấn chuột hàm sẽ kiểm tra và khởi tạo hình được vẽ
         private void pic_MouseDown(object sender, MouseEventArgs e)
         {
-            btnGroup.Tag = false;
+
             // Khi isStartClick true có nghĩa Polygon hoặc Curve đang được vẽ
             // Không thể tạo thêm hình khi hình hiện tại chưa vẽ xong
             if (shapeDrawing != Shape.None && !isStartClick)
@@ -784,7 +800,7 @@ namespace Simple_Paint
                 
                 if(shapeSelected!=null)
                 {
-                    if (isZoom)
+                    if ((bool)btnZoom.Tag)
                         shapeSelected.Zoom(fixedPoint, e.Location);
                     else shapeSelected.Move(fixedPoint, e.Location);
                     fixedPoint = e.Location;
@@ -906,5 +922,5 @@ namespace Simple_Paint
         #endregion
 
     }
-
+    #endregion
 }

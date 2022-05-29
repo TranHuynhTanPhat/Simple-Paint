@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.pnlMain = new System.Windows.Forms.Panel();
             this.pic = new System.Windows.Forms.PictureBox();
@@ -76,7 +75,6 @@
             this.btnRectangle = new System.Windows.Forms.Button();
             this.btnLine = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.pnlMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic)).BeginInit();
@@ -682,7 +680,6 @@
             this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Paint";
-            this.toolTip1.SetToolTip(this, "Create by 18110377");
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmMain_FormClosed);
             this.SizeChanged += new System.EventHandler(this.FrmMain_SizeChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmMain_KeyDown);
@@ -760,7 +757,6 @@
         private System.Windows.Forms.Button btnRectangle;
         private System.Windows.Forms.Button btnLine;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.CheckBox cbBrush;
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.TrackBar trbSize;

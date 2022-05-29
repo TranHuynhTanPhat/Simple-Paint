@@ -79,12 +79,12 @@ namespace Simple_Paint
         }
         #endregion
 
-        #region Methods default
 
+        #region Virtual Methods
         public virtual bool CheckSelected(Point e)
         {
             if (isBrushing) return gpPath.IsVisible(e);
-            return gpPath.IsOutlineVisible(e,pen);
+            return gpPath.IsOutlineVisible(e, pen);
         }
 
         /// <summary>
@@ -103,10 +103,6 @@ namespace Simple_Paint
             pen.DashStyle = dashStyle;
             pen.Color = penColor;
         }
-        #endregion
-
-        #region Virtual Methods
-
         /// <summary>
         /// Xác định khung ràng buộc của những hình được tạo thành bởi khung hình chữ nhât
         /// </summary>
@@ -179,7 +175,7 @@ namespace Simple_Paint
         }
         #endregion
 
-        #region Abstract
+        #region Abstract Mothods
         /// <summary>
         /// Hàm vẽ hình
         /// </summary>
