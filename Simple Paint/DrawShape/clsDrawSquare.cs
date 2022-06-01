@@ -12,17 +12,52 @@ namespace Simple_Paint
         public ClsDrawSquare(Pen pen, Brush brush) : base(pen, brush) { }
 
         #region override
+        public override void AddPoin(Point p)
+        {
+            p2 = p;
+        }
+
+
+        public override Rectangle BoundRectangle()
+        {
+            int dx = Math.Abs(p1.X - p2.X);
+            int dy = Math.Abs(p1.Y - p2.Y);
+            int d = Math.Max(dx, dy);
+            if (p1.X < p2.X && p1.Y < p2.Y)
+            {
+                p2 = new Point(p1.X + d, p1.Y + d);
+                return new Rectangle(p1.X, p1.Y, d, d);
+            }
+            else if (p1.X > p2.X && p1.Y < p2.Y)
+            {
+                p2 = new Point(p1.X - d, p1.Y + d);
+                return new Rectangle(p1.X - d, p1.Y, d, d);
+            }
+            else if(p1.X < p2.X && p1.Y > p2.Y)
+            {
+                p2 = new Point(p1.X + d, p1.Y - d);
+                return new Rectangle(p1.X, p1.Y - d, d, d);
+            }
+            else
+            {
+                p2 = new Point(p1.X - d, p1.Y - d);
+                return new Rectangle(p1.X - d, p1.Y - d, d, d);
+            }
+                
+                
+        }
+
         public override void Draw(Graphics gp)
         {
             Rectangle rect = BoundRectangle();
             gpPath.Reset();
             gpPath.AddRectangle(rect);
-            if(isBrushing)
+            if (isBrushing)
             {
                 gp.FillRectangle(brush, rect);
-                if(isBordering)
-                gp.DrawRectangle(pen, rect);// Vẽ viền cho hình
-            }    
+                if (isBordering)
+                    gp.DrawRectangle(pen, rect);// Vẽ viền cho hình
+            }
             else
                 gp.DrawRectangle(pen, rect);
             if (isSelected)
@@ -44,21 +79,7 @@ namespace Simple_Paint
                     DashStyle = System.Drawing.Drawing2D.DashStyle.Dash
                 };
                 gp.DrawRectangle(sPen, rect);
-            }    
-        }
-        public override Rectangle BoundRectangle()
-        {
-            int dx = Math.Abs(p1.X - p2.X);
-            int dy = Math.Abs(p1.Y - p2.Y);
-            int width = Math.Max(dx, dy);
-            p2 = new Point(p1.X + width, p1.Y + width);
-
-            return new Rectangle( p1.X, p1.Y, width, width);
-        }
-
-        public override void AddPoin(Point p)
-        {
-            p2 = p;
+            }
         }
         #endregion
     }
